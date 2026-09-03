@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fathom Digital — SEO, Web, Design & Video</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: '#14171F',
+          paper: '#F7F5F0',
+          brass: '#B9863E',
+          rust: '#C4562E',
+          teal: '#2F5D58',
+          line: '#DEDACE',
+          linedark: 'rgba(247,245,240,0.14)'
+        },
+        fontFamily: {
+          serif: ['Fraunces', 'serif'],
+          sans: ['Inter', 'sans-serif'],
+          mono: ['Space Mono', 'monospace']
+        }
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; }
+  .serif { font-family: 'Fraunces', serif; }
+  .mono { font-family: 'Space Mono', monospace; }
+  ::selection { background: #B9863E; color: #14171F; }
+
+  .grain { position: relative; }
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.045;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .fade-up { opacity: 0; transform: translateY(14px); animation: fadeUp 0.7s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .fade-up { animation: none; opacity: 1; transform: none; } }
+
+  .hairline { border-color: #DEDACE; }
+
+  input:focus-visible, a:focus-visible, button:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid #B9863E;
+    outline-offset: 2px;
+  }
+
+  /* duotone photography, tinted to the brand instead of generic full-color stock */
+  .duotone { position: relative; overflow: hidden; }
+  .duotone img { display: block; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.15); }
+  .duotone::after {
+    content: "";
+    position: absolute; inset: 0;
+    mix-blend-mode: color;
+    background: linear-gradient(160deg, #2F5D58 0%, #14171F 100%);
+  }
+  .duotone.warm::after { background: linear-gradient(160deg, #B9863E 0%, #14171F 100%); }
+
+  .tilt { transform: rotate(-2.5deg); }
+  .tilt-r { transform: rotate(2deg); }
+
+  marquee-track { display: flex; width: max-content; animation: scroll 26s linear infinite; }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { marquee-track { animation: none; } }
+
+  .path-draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 2.4s ease forwards .3s; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) { .path-draw { stroke-dashoffset: 0; animation: none; } }
+</style>
+</head>
+<body class="bg-paper text-ink antialiased">
+
+  <!-- NAV -->
+  <header class="border-b hairline sticky top-0 bg-paper/90 backdrop-blur z-40">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 flex items-center justify-between h-20">
+      <a href="#top" class="flex items-baseline gap-2">
+        <span class="serif text-2xl tracking-tight">Fathom</span>
+        <span class="text-xs text-ink/50 hidden sm:inline">Digital</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-9 text-[15px] text-ink/70">
+        <a href="#services" class="hover:text-ink transition-colors">Services</a>
+        <a href="#work" class="hover:text-ink transition-colors">Work</a>
+        <a href="#process" class="hover:text-ink transition-colors">Process</a>
+        <a href="#pricing" class="hover:text-ink transition-colors">Pricing</a>
+        <a href="#contact" class="hover:text-ink transition-colors">Contact</a>
+      </nav>
+      <a href="#contact" class="inline-flex items-center rounded-full bg-ink text-paper text-sm font-medium px-5 py-2.5 hover:bg-teal transition-colors">
+        Book a call
+      </a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="top" class="max-w-6xl mx-auto px-6 sm:px-8 pt-14 sm:pt-20 pb-16 relative">
+    <div class="grid lg:grid-cols-12 gap-10 items-center">
+      <div class="lg:col-span-7 fade-up relative z-10">
+        <p class="mono text-xs text-brass tracking-tight mb-5">// digital marketing, measured</p>
+        <h1 class="serif text-[2.5rem] leading-[1.08] sm:text-[3.6rem] sm:leading-[1.03] font-medium max-w-xl">
+          We take the guesswork out of growing your business online.
+        </h1>
+        <p class="mt-7 text-lg text-ink/70 max-w-lg leading-relaxed">
+          Fathom is a small studio of strategists, engineers, and editors. We build the site, rank it, dress it, and cut the footage — then show you the numbers that prove it worked.
+        </p>
+        <div class="mt-9 flex flex-wrap items-center gap-4">
+          <a href="#contact" class="inline-flex items-center rounded-full bg-ink text-paper text-sm font-medium px-6 py-3 hover:bg-teal transition-colors">
+            Start a project
+          </a>
+          <a href="#work" class="inline-flex items-center text-sm font-medium text-ink/80 hover:text-ink border-b border-ink/30 hover:border-ink pb-0.5 transition-colors">
+            See recent work
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 relative fade-up" style="animation-delay:.1s">
+        <div class="duotone rounded-2xl aspect-[4/5] tilt-r shadow-[0_30px_60px_-25px_rgba(20,23,31,0.4)]">
+          <img src="https://picsum.photos/id/60/700/900" alt="Studio workspace where campaigns get planned" loading="lazy" />
+        </div>
+        <!-- floating growth chart annotation -->
+        <div class="absolute -left-8 -bottom-8 bg-paper border border-line rounded-xl p-4 w-44 shadow-lg tilt hidden sm:block">
+          <svg viewBox="0 0 140 60" class="w-full h-auto">
+            <polyline class="path-draw" points="4,50 25,42 45,44 65,25 90,28 115,10 136,6" fill="none" stroke="#2F5D58" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p class="mono text-[11px] text-ink/60 mt-1">organic traffic ↑ 340%</p>
+        </div>
+        <div class="absolute -right-4 -top-4 size-16 rounded-full bg-brass text-ink flex items-center justify-center serif text-sm text-center leading-tight rotate-6 shadow-md hidden sm:flex">
+          on<br/>brief
+        </div>
+      </div>
+    </div>
+
+    <!-- stat rail -->
+    <div class="mt-20 grid sm:grid-cols-3 gap-8 border-t hairline pt-8 fade-up" style="animation-delay:.15s">
+      <div>
+        <div class="serif text-4xl">6.2×</div>
+        <p class="text-sm text-ink/60 mt-1">average organic traffic growth, 12 months</p>
+      </div>
+      <div>
+        <div class="serif text-4xl">118</div>
+        <p class="text-sm text-ink/60 mt-1">sites, campaigns and edits shipped since 2019</p>
+      </div>
+      <div>
+        <div class="serif text-4xl">4.9 / 5</div>
+        <p class="text-sm text-ink/60 mt-1">average client rating across 60+ reviews</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <section class="border-y hairline bg-ink text-paper overflow-hidden">
+    <div class="py-4 overflow-hidden">
+      <marquee-track class="text-2xl serif whitespace-nowrap">
+        <span class="px-8">SEO</span><span class="px-8 text-brass">·</span>
+        <span class="px-8">Web development</span><span class="px-8 text-brass">·</span>
+        <span class="px-8">Graphic design</span><span class="px-8 text-brass">·</span>
+        <span class="px-8">Video editing</span><span class="px-8 text-brass">·</span>
+        <span class="px-8">SEO</span><span class="px-8 text-brass">·</span>
+        <span class="px-8">Web development</span><span class="px-8 text-brass">·</span>
+        <span class="px-8">Graphic design</span><span class="px-8 text-brass">·</span>
+        <span class="px-8">Video editing</span><span class="px-8 text-brass">·</span>
+      </marquee-track>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="max-w-6xl mx-auto px-6 sm:px-8 py-24">
+    <div class="max-w-xl mb-14">
+      <p class="text-sm text-brass font-medium mb-3">What we do</p>
+      <h2 class="serif text-4xl sm:text-5xl leading-tight">Four disciplines, one team, one thread of strategy running through all of it.</h2>
+    </div>
+
+    <div class="divide-y hairline border-t border-b hairline">
+
+      <div class="grid md:grid-cols-12 gap-6 py-10 items-center group">
+        <div class="md:col-span-1">
+          <svg viewBox="0 0 40 40" class="size-8 text-brass"><circle cx="17" cy="17" r="11" fill="none" stroke="currentColor" stroke-width="2.5"/><line x1="25" y1="25" x2="35" y2="35" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="md:col-span-3">
+          <h3 class="serif text-2xl">SEO &amp; content</h3>
+        </div>
+        <div class="md:col-span-5 text-ink/65 leading-relaxed">
+          Technical audits, keyword and topic research, on-page fixes, and editorial content built to rank and to actually be read. We report on rankings, traffic and — most importantly — the leads and sales they produce.
+        </div>
+        <div class="md:col-span-3 flex md:justify-end items-center">
+          <a href="#contact" class="text-sm font-medium text-ink/70 hover:text-ink border-b border-transparent hover:border-ink transition-colors">Enquire →</a>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-12 gap-6 py-10 items-center group">
+        <div class="md:col-span-1">
+          <svg viewBox="0 0 40 40" class="size-8 text-brass"><path d="M12 12 4 20l8 8M28 12l8 8-8 8M23 8l-6 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="md:col-span-3">
+          <h3 class="serif text-2xl">Web development</h3>
+        </div>
+        <div class="md:col-span-5 text-ink/65 leading-relaxed">
+          Fast, accessible, easy-to-edit websites — from marketing sites to full e-commerce builds. Clean code, sensible CMS choices, and performance budgets we hold ourselves to on every launch.
+        </div>
+        <div class="md:col-span-3 flex md:justify-end items-center">
+          <a href="#contact" class="text-sm font-medium text-ink/70 hover:text-ink border-b border-transparent hover:border-ink transition-colors">Enquire →</a>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-12 gap-6 py-10 items-center group">
+        <div class="md:col-span-1">
+          <svg viewBox="0 0 40 40" class="size-8 text-brass"><circle cx="14" cy="14" r="8" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="26" cy="14" r="8" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="20" cy="26" r="8" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>
+        </div>
+        <div class="md:col-span-3">
+          <h3 class="serif text-2xl">Graphic design</h3>
+        </div>
+        <div class="md:col-span-5 text-ink/65 leading-relaxed">
+          Brand identity, packaging, social templates and print collateral. We build design systems your team can keep using long after the project wraps, not one-off files that go stale.
+        </div>
+        <div class="md:col-span-3 flex md:justify-end items-center">
+          <a href="#contact" class="text-sm font-medium text-ink/70 hover:text-ink border-b border-transparent hover:border-ink transition-colors">Enquire →</a>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-12 gap-6 py-10 items-center group">
+        <div class="md:col-span-1">
+          <svg viewBox="0 0 40 40" class="size-8 text-brass"><rect x="4" y="10" width="32" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M16 15l9 5-9 5v-10Z" fill="currentColor"/></svg>
+        </div>
+        <div class="md:col-span-3">
+          <h3 class="serif text-2xl">Video editing</h3>
+        </div>
+        <div class="md:col-span-5 text-ink/65 leading-relaxed">
+          Product videos, ads, and short-form cuts for reels and shorts. Colour, sound design and captions handled in-house, with turnaround built around campaign deadlines, not the other way round.
+        </div>
+        <div class="md:col-span-3 flex md:justify-end items-center">
+          <a href="#contact" class="text-sm font-medium text-ink/70 hover:text-ink border-b border-transparent hover:border-ink transition-colors">Enquire →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work" class="bg-ink text-paper grain">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 py-24 relative z-10">
+      <div class="flex flex-wrap items-end justify-between gap-6 mb-14">
+        <div class="max-w-xl">
+          <p class="text-sm text-brass font-medium mb-3">Recent work</p>
+          <h2 class="serif text-4xl sm:text-5xl leading-tight">A handful of the projects we're proudest of.</h2>
+        </div>
+        <a href="#contact" class="text-sm font-medium text-paper/70 hover:text-paper border-b border-paper/30 hover:border-paper pb-0.5 transition-colors">
+          Start something similar
+        </a>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        <a href="#contact" class="group block">
+          <div class="duotone rounded-xl aspect-[4/3] mb-4">
+            <img src="https://picsum.photos/id/26/600/450" alt="Osprey Home SEO project" loading="lazy" class="group-hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="mono text-xs text-brass mb-1">Osprey Home · SEO + Content</div>
+          <h3 class="serif text-xl">Rebuilt category pages, tripled organic sessions</h3>
+        </a>
+
+        <a href="#contact" class="group block sm:mt-10">
+          <div class="duotone warm rounded-xl aspect-[4/3] mb-4">
+            <img src="https://picsum.photos/id/180/600/450" alt="Halyard Studio web development project" loading="lazy" class="group-hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="mono text-xs text-brass mb-1">Halyard Studio · Web development</div>
+          <h3 class="serif text-xl">A booking site that loads in under a second</h3>
+        </a>
+
+        <a href="#contact" class="group block">
+          <div class="duotone rounded-xl aspect-[4/3] mb-4">
+            <img src="https://picsum.photos/id/96/600/450" alt="Redgate Supply packaging project" loading="lazy" class="group-hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="mono text-xs text-brass mb-1">Redgate Supply · Brand + Packaging</div>
+          <h3 class="serif text-xl">A visual identity that finally matched the product</h3>
+        </a>
+
+        <a href="#contact" class="group block">
+          <div class="duotone warm rounded-xl aspect-[4/3] mb-4">
+            <img src="https://picsum.photos/id/119/600/450" alt="Marlow and Finch video project" loading="lazy" class="group-hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="mono text-xs text-brass mb-1">Marlow &amp; Finch · Video</div>
+          <h3 class="serif text-xl">Short-form cuts that actually got watched</h3>
+        </a>
+
+        <a href="#contact" class="group block sm:mt-10">
+          <div class="duotone rounded-xl aspect-[4/3] mb-4">
+            <img src="https://picsum.photos/id/48/600/450" alt="Kettlebrook platform migration project" loading="lazy" class="group-hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="mono text-xs text-brass mb-1">Kettlebrook · SEO + Web</div>
+          <h3 class="serif text-xl">Migrated platforms without losing a single ranking</h3>
+        </a>
+
+        <a href="#contact" class="group block">
+          <div class="duotone warm rounded-xl aspect-[4/3] mb-4">
+            <img src="https://picsum.photos/id/160/600/450" alt="Full-service brand launch project" loading="lazy" class="group-hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="mono text-xs text-brass mb-1">Private client · Full service</div>
+          <h3 class="serif text-xl">Site, brand and launch video, in six weeks</h3>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process" class="max-w-6xl mx-auto px-6 sm:px-8 py-24">
+    <div class="grid lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-4">
+        <p class="text-sm text-brass font-medium mb-3">How we work</p>
+        <h2 class="serif text-4xl leading-tight mb-6">Four steps, from first call to reporting.</h2>
+        <div class="duotone rounded-xl aspect-square hidden lg:block">
+          <img src="https://picsum.photos/id/1/500/500" alt="Team reviewing a strategy on paper" loading="lazy" />
+        </div>
+      </div>
+      <div class="lg:col-span-8 grid sm:grid-cols-2 gap-8">
+        <div class="border-t-2 border-brass pt-5">
+          <div class="mono text-sm text-ink/40 mb-2">01</div>
+          <h3 class="serif text-xl mb-2">Audit &amp; strategy</h3>
+          <p class="text-ink/65 text-sm leading-relaxed">We study your site, your competitors, and your numbers before proposing anything. Two weeks, one clear plan.</p>
+        </div>
+        <div class="border-t-2 border-brass pt-5">
+          <div class="mono text-sm text-ink/40 mb-2">02</div>
+          <h3 class="serif text-xl mb-2">Build</h3>
+          <p class="text-ink/65 text-sm leading-relaxed">Design, development, content and video move in parallel, with a single project lead keeping every piece aligned.</p>
+        </div>
+        <div class="border-t-2 border-brass pt-5">
+          <div class="mono text-sm text-ink/40 mb-2">03</div>
+          <h3 class="serif text-xl mb-2">Launch</h3>
+          <p class="text-ink/65 text-sm leading-relaxed">Staged rollout, tracking confirmed before go-live, and a launch checklist that leaves nothing to chance.</p>
+        </div>
+        <div class="border-t-2 border-brass pt-5">
+          <div class="mono text-sm text-ink/40 mb-2">04</div>
+          <h3 class="serif text-xl mb-2">Measure &amp; refine</h3>
+          <p class="text-ink/65 text-sm leading-relaxed">Monthly reporting in plain language, with a running list of the next-highest-leverage improvements.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="border-y hairline bg-white/40">
+    <div class="max-w-4xl mx-auto px-6 sm:px-8 py-20 text-center">
+      <p class="serif text-2xl sm:text-3xl leading-snug">
+        "Fathom rebuilt our site, rewrote our category pages, and within four months we had more qualified leads than the previous two years combined."
+      </p>
+      <div class="mt-6 flex items-center justify-center gap-3">
+        <div class="duotone rounded-full size-10 shrink-0">
+          <img src="https://picsum.photos/id/64/80/80" alt="Priya Anand" loading="lazy" />
+        </div>
+        <p class="text-sm text-ink/60">Priya Anand · Founder, Osprey Home</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="max-w-6xl mx-auto px-6 sm:px-8 py-24">
+    <div class="max-w-xl mb-14">
+      <p class="text-sm text-brass font-medium mb-3">Packages</p>
+      <h2 class="serif text-4xl sm:text-5xl leading-tight">Pick a starting point. We'll adjust it to your goals on the call.</h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-px bg-line border border-line">
+      <div class="bg-paper p-8 flex flex-col">
+        <h3 class="serif text-xl mb-1">Foundation</h3>
+        <p class="text-ink/55 text-sm mb-6">For a first site or an SEO reset</p>
+        <div class="serif text-4xl mb-6">$2,400<span class="text-base text-ink/50 font-sans">/mo</span></div>
+        <ul class="space-y-3 text-sm text-ink/70 flex-1">
+          <li class="flex gap-2"><span class="text-brass">—</span> Technical + content SEO audit</li>
+          <li class="flex gap-2"><span class="text-brass">—</span> Up to 6 pages built or refreshed</li>
+          <li class="flex gap-2"><span class="text-brass">—</span> 2 blog or landing pages / month</li>
+          <li class="flex gap-2"><span class="text-brass">—</span> Monthly reporting call</li>
+        </ul>
+        <a href="#contact" class="mt-8 inline-flex justify-center items-center rounded-full border border-ink text-sm font-medium px-5 py-2.5 hover:bg-ink hover:text-paper transition-colors">Get started</a>
+      </div>
+
+      <div class="bg-ink text-paper p-8 flex flex-col relative">
+        <div class="absolute top-0 right-0 bg-brass text-ink text-xs font-medium px-3 py-1">Most common</div>
+        <h3 class="serif text-xl mb-1">Growth</h3>
+        <p class="text-paper/60 text-sm mb-6">For teams ready to push on every channel</p>
+        <div class="serif text-4xl mb-6">$5,200<span class="text-base text-paper/50 font-sans">/mo</span></div>
+        <ul class="space-y-3 text-sm text-paper/75 flex-1">
+          <li class="flex gap-2"><span class="text-brass">—</span> Everything in Foundation</li>
+          <li class="flex gap-2"><span class="text-brass">—</span> Ongoing web development sprint</li>
+          <li class="flex gap-2"><span class="text-brass">—</span> Brand &amp; graphic design support</li>
+          <li class="flex gap-2"><span class="text-brass">—</span> 4 short-form videos / month</li>
+          <li class="flex gap-2"><span class="text-brass">—</span> Dedicated project lead</li>
+        </ul>
+        <a href="#contact" class="mt-8 inline-flex justify-center items-center rounded-full bg-brass text-ink text-sm font-medium px-5 py-2.5 hover:bg-paper transition-colors">Get started</a>
+      </div>
+
+      <div class="bg-paper p-8 flex flex-col">
+        <h3 class="serif text-xl mb-1">Full service</h3>
+        <p class="text-ink/55 text-sm mb-6">For larger catalogs and campaigns</p>
+        <div class="serif text-4xl mb-6">Custom</div>
+        <ul class="space-y-3 text-sm text-ink/70 flex-1">
+          <li class="flex gap-2"><span class="text-brass">—</span> Everything in Growth</li>
+          <li class="flex gap-2"><span class="text-brass">—</span> Multi-market SEO &amp; content</li>
+          <li class="flex gap-2"><span class="text-brass">—</span> Full video production, longform included</li>
+          <li class="flex gap-2"><span class="text-brass">—</span> Weekly strategy sessions</li>
+        </ul>
+        <a href="#contact" class="mt-8 inline-flex justify-center items-center rounded-full border border-ink text-sm font-medium px-5 py-2.5 hover:bg-ink hover:text-paper transition-colors">Talk to us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT / CTA -->
+  <section id="contact" class="bg-teal text-paper">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 py-24 grid lg:grid-cols-2 gap-14">
+      <div>
+        <p class="text-sm text-brass font-medium mb-3">Get in touch</p>
+        <h2 class="serif text-4xl sm:text-5xl leading-tight max-w-md">Tell us where growth is stalling. We'll tell you what we'd do about it.</h2>
+        <p class="mt-6 text-paper/70 max-w-md leading-relaxed">
+          No obligation, no generic proposal. A 30-minute call, a straight answer about whether we're a fit, and if we are — a plan.
+        </p>
+        <div class="mt-10 space-y-2 text-sm text-paper/70">
+          <p>hello@fathomdigital.co</p>
+          <p>+1 (415) 555-0138</p>
+        </div>
+      </div>
+
+      <form class="bg-paper text-ink p-8 rounded-2xl" onsubmit="return false;">
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div class="sm:col-span-1">
+            <label class="block text-sm mb-1.5" for="name">Name</label>
+            <input id="name" type="text" class="w-full rounded-lg border border-line px-3.5 py-2.5 bg-white" placeholder="Jordan Lee" />
+          </div>
+          <div class="sm:col-span-1">
+            <label class="block text-sm mb-1.5" for="email">Email</label>
+            <input id="email" type="email" class="w-full rounded-lg border border-line px-3.5 py-2.5 bg-white" placeholder="jordan@company.com" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-sm mb-1.5" for="service">What are you looking for?</label>
+            <select id="service" class="w-full rounded-lg border border-line px-3.5 py-2.5 bg-white">
+              <option>SEO &amp; content</option>
+              <option>Web development</option>
+              <option>Graphic design</option>
+              <option>Video editing</option>
+              <option>A mix of the above</option>
+            </select>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-sm mb-1.5" for="message">A little about the project</label>
+            <textarea id="message" rows="4" class="w-full rounded-lg border border-line px-3.5 py-2.5 bg-white" placeholder="What you're working on, and what's not working today"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="mt-6 w-full inline-flex justify-center items-center rounded-full bg-ink text-paper text-sm font-medium px-6 py-3 hover:bg-brass hover:text-ink transition-colors">
+          Send message
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-ink text-paper/60">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 py-12 flex flex-wrap items-center justify-between gap-6 text-sm">
+      <div class="flex items-baseline gap-2 text-paper">
+        <span class="serif text-xl">Fathom</span>
+        <span class="text-xs text-paper/40">Digital</span>
+      </div>
+      <nav class="flex flex-wrap gap-7">
+        <a href="#services" class="hover:text-paper transition-colors">Services</a>
+        <a href="#work" class="hover:text-paper transition-colors">Work</a>
+        <a href="#process" class="hover:text-paper transition-colors">Process</a>
+        <a href="#pricing" class="hover:text-paper transition-colors">Pricing</a>
+        <a href="#contact" class="hover:text-paper transition-colors">Contact</a>
+      </nav>
+      <p>© 2026 Fathom Digital.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

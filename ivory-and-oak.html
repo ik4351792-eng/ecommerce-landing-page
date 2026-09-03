@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ivory & Oak — Furniture Made to Outlast You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ivory: '#F3EEE6',
+          walnut: '#3A2E26',
+          clay: '#B4703F',
+          sage: '#6B7561',
+          line: '#E3DCCF',
+          cream: '#FBF9F5'
+        },
+        fontFamily: {
+          serif: ['Fraunces', 'serif'],
+          sans: ['Inter', 'sans-serif']
+        }
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; }
+  .serif { font-family: 'Fraunces', serif; }
+  .serif-i { font-family: 'Fraunces', serif; font-style: italic; }
+  ::selection { background: #B4703F; color: #F3EEE6; }
+  .hairline { border-color: #E3DCCF; }
+
+  .fade-up { opacity: 0; transform: translateY(16px); animation: fadeUp .8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .fade-up { animation: none; opacity: 1; transform: none; } }
+
+  .duotone { position: relative; overflow: hidden; background: #3A2E26; }
+  .duotone img { display: block; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.1) brightness(1.02); }
+  .duotone::after { content: ""; position: absolute; inset: 0; mix-blend-mode: color; background: linear-gradient(160deg, #B4703F 0%, #3A2E26 100%); }
+  .duotone.sagey::after { background: linear-gradient(160deg, #6B7561 0%, #3A2E26 100%); }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+
+  .scrollx { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .scrollx > * { scroll-snap-align: start; }
+  .scrollx::-webkit-scrollbar { height: 6px; }
+  .scrollx::-webkit-scrollbar-thumb { background: #E3DCCF; border-radius: 4px; }
+
+  input:focus-visible, a:focus-visible, button:focus-visible { outline: 2px solid #B4703F; outline-offset: 2px; }
+</style>
+</head>
+<body class="bg-ivory text-walnut antialiased">
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="bg-walnut text-ivory text-center text-xs sm:text-sm py-2.5 px-4">
+    Complimentary white-glove delivery on orders over $1,500 · Handmade to order, 6–10 week lead time
+  </div>
+
+  <!-- NAV -->
+  <header class="border-b hairline sticky top-0 bg-ivory/95 backdrop-blur z-40">
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 flex items-center justify-between h-20">
+      <a href="#top" class="serif text-2xl tracking-tight">Ivory <span class="serif-i text-clay">&amp;</span> Oak</a>
+      <nav class="hidden lg:flex items-center gap-9 text-[15px] text-walnut/70">
+        <a href="#collections" class="hover:text-walnut transition-colors">Collections</a>
+        <a href="#craft" class="hover:text-walnut transition-colors">Craftsmanship</a>
+        <a href="#rooms" class="hover:text-walnut transition-colors">Rooms</a>
+        <a href="#materials" class="hover:text-walnut transition-colors">Materials</a>
+        <a href="#showrooms" class="hover:text-walnut transition-colors">Showrooms</a>
+        <a href="#faq" class="hover:text-walnut transition-colors">FAQ</a>
+      </nav>
+      <a href="#newsletter" class="inline-flex items-center rounded-full border border-walnut text-sm font-medium px-5 py-2.5 hover:bg-walnut hover:text-ivory transition-colors">
+        Book a consult
+      </a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="top" class="relative">
+    <div class="duotone h-[86vh] min-h-[560px]">
+      <img src="https://picsum.photos/id/1080/1800/1400" alt="A quiet living room furnished with handmade wooden pieces" loading="eager" />
+    </div>
+    <div class="absolute inset-0 flex items-end">
+      <div class="max-w-7xl mx-auto px-6 sm:px-10 pb-16 sm:pb-24 w-full">
+        <div class="fade-up max-w-2xl text-ivory">
+          <p class="text-sm tracking-wide text-ivory/70 mb-5">Furniture, made once, made well</p>
+          <h1 class="serif text-[2.6rem] leading-[1.05] sm:text-6xl sm:leading-[1.02] font-medium">
+            Pieces built to be handed down, not replaced.
+          </h1>
+          <p class="mt-6 text-lg text-ivory/80 max-w-lg leading-relaxed">
+            Every table, chair and cabinet leaves our workshop solid wood, hand-joined, and finished by someone who will tell you their name.
+          </p>
+          <div class="mt-9 flex flex-wrap items-center gap-4">
+            <a href="#collections" class="inline-flex items-center rounded-full bg-ivory text-walnut text-sm font-medium px-6 py-3 hover:bg-clay hover:text-ivory transition-colors">
+              Shop the collection
+            </a>
+            <a href="#craft" class="inline-flex items-center text-sm font-medium text-ivory/90 hover:text-ivory border-b border-ivory/40 hover:border-ivory pb-0.5 transition-colors">
+              How it's made
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO STRIP -->
+  <section class="max-w-4xl mx-auto px-6 sm:px-10 py-24 text-center reveal">
+    <p class="text-sm text-clay font-medium mb-5">Our belief</p>
+    <p class="serif text-3xl sm:text-4xl leading-snug">
+      Most furniture is designed to be sold. We design ours to be <span class="serif-i">lived with</span> — for one winter, then for thirty more, then for whoever comes after you.
+    </p>
+  </section>
+
+  <!-- COLLECTIONS -->
+  <section id="collections" class="max-w-7xl mx-auto px-6 sm:px-10 pb-24">
+    <div class="flex flex-wrap items-end justify-between gap-6 mb-10 reveal">
+      <div class="max-w-xl">
+        <p class="text-sm text-clay font-medium mb-3">Collections</p>
+        <h2 class="serif text-4xl sm:text-5xl leading-tight">Six collections, each named for the wood it's built from.</h2>
+      </div>
+      <p class="text-walnut/60 text-sm max-w-xs">Scroll to browse — every piece is available to view by appointment at our workshop.</p>
+    </div>
+
+    <div class="scrollx flex gap-6 overflow-x-auto pb-4 -mx-6 px-6 sm:mx-0 sm:px-0">
+      <div class="shrink-0 w-[300px] sm:w-[340px]">
+        <div class="duotone rounded-lg aspect-[4/5] mb-4"><img src="https://picsum.photos/id/106/500/650" alt="Walnut collection dining table" loading="lazy" /></div>
+        <h3 class="serif text-xl">Walnut</h3>
+        <p class="text-sm text-walnut/60 mt-1">Dining tables &amp; benches</p>
+      </div>
+      <div class="shrink-0 w-[300px] sm:w-[340px]">
+        <div class="duotone sagey rounded-lg aspect-[4/5] mb-4"><img src="https://picsum.photos/id/163/500/650" alt="Ash collection armchair" loading="lazy" /></div>
+        <h3 class="serif text-xl">Ash</h3>
+        <p class="text-sm text-walnut/60 mt-1">Armchairs &amp; lounge seating</p>
+      </div>
+      <div class="shrink-0 w-[300px] sm:w-[340px]">
+        <div class="duotone rounded-lg aspect-[4/5] mb-4"><img src="https://picsum.photos/id/188/500/650" alt="Oak collection sideboard" loading="lazy" /></div>
+        <h3 class="serif text-xl">Oak</h3>
+        <p class="text-sm text-walnut/60 mt-1">Sideboards &amp; cabinetry</p>
+      </div>
+      <div class="shrink-0 w-[300px] sm:w-[340px]">
+        <div class="duotone sagey rounded-lg aspect-[4/5] mb-4"><img src="https://picsum.photos/id/225/500/650" alt="Cedar collection bed frame" loading="lazy" /></div>
+        <h3 class="serif text-xl">Cedar</h3>
+        <p class="text-sm text-walnut/60 mt-1">Bed frames &amp; headboards</p>
+      </div>
+      <div class="shrink-0 w-[300px] sm:w-[340px]">
+        <div class="duotone rounded-lg aspect-[4/5] mb-4"><img src="https://picsum.photos/id/292/500/650" alt="Maple collection desk" loading="lazy" /></div>
+        <h3 class="serif text-xl">Maple</h3>
+        <p class="text-sm text-walnut/60 mt-1">Desks &amp; study furniture</p>
+      </div>
+      <div class="shrink-0 w-[300px] sm:w-[340px]">
+        <div class="duotone sagey rounded-lg aspect-[4/5] mb-4"><img src="https://picsum.photos/id/312/500/650" alt="Elm collection shelving" loading="lazy" /></div>
+        <h3 class="serif text-xl">Elm</h3>
+        <p class="text-sm text-walnut/60 mt-1">Shelving &amp; open storage</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCT — split -->
+  <section class="max-w-7xl mx-auto px-6 sm:px-10 pb-24">
+    <div class="grid lg:grid-cols-2 gap-0 border hairline rounded-2xl overflow-hidden reveal">
+      <div class="duotone aspect-[4/3] lg:aspect-auto">
+        <img src="https://picsum.photos/id/1060/900/900" alt="The Harlow dining table in solid walnut" loading="lazy" />
+      </div>
+      <div class="p-8 sm:p-12 flex flex-col justify-center bg-cream">
+        <p class="text-sm text-clay font-medium mb-3">The piece we're known for</p>
+        <h3 class="serif text-3xl sm:text-4xl mb-5">The Harlow Dining Table</h3>
+        <p class="text-walnut/70 leading-relaxed max-w-md">
+          Book-matched solid walnut, hand-cut sliding dovetails, and a hardwax oil finish you can repair yourself in an afternoon, decades from now. Seats six to ten.
+        </p>
+        <div class="mt-8 flex items-center gap-6">
+          <span class="serif text-3xl">$4,850</span>
+          <a href="#newsletter" class="inline-flex items-center rounded-full bg-walnut text-ivory text-sm font-medium px-6 py-3 hover:bg-clay transition-colors">Enquire</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRAFTSMANSHIP -->
+  <section id="craft" class="bg-walnut text-ivory">
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 py-24">
+      <div class="max-w-xl mb-16 reveal">
+        <p class="text-sm text-clay font-medium mb-3">Craftsmanship</p>
+        <h2 class="serif text-4xl sm:text-5xl leading-tight">From standing timber to finished piece, nothing is rushed.</h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-10">
+        <div class="reveal">
+          <div class="duotone rounded-lg aspect-[4/3] mb-6"><img src="https://picsum.photos/id/1059/500/380" alt="Selecting timber at the mill" loading="lazy" /></div>
+          <div class="text-sm text-ivory/40 mb-2">01 · Selection</div>
+          <h3 class="serif text-xl mb-2">Timber, chosen by hand</h3>
+          <p class="text-ivory/65 text-sm leading-relaxed">We buy whole logs from FSC-certified mills and let them air-dry for up to two years before a single cut is made.</p>
+        </div>
+        <div class="reveal">
+          <div class="duotone sagey rounded-lg aspect-[4/3] mb-6"><img src="https://picsum.photos/id/1071/500/380" alt="Joinery in progress" loading="lazy" /></div>
+          <div class="text-sm text-ivory/40 mb-2">02 · Joinery</div>
+          <h3 class="serif text-xl mb-2">Joints, not fasteners</h3>
+          <p class="text-ivory/65 text-sm leading-relaxed">Mortise and tenon, dovetail, and draw-bore joinery throughout — no particleboard, no visible screws, nothing to come loose.</p>
+        </div>
+        <div class="reveal">
+          <div class="duotone rounded-lg aspect-[4/3] mb-6"><img src="https://picsum.photos/id/1050/500/380" alt="Hand finishing a tabletop" loading="lazy" /></div>
+          <div class="text-sm text-ivory/40 mb-2">03 · Finishing</div>
+          <h3 class="serif text-xl mb-2">Oiled, not lacquered</h3>
+          <p class="text-ivory/65 text-sm leading-relaxed">A hardwax oil finish that ages honestly and can be refreshed at home, instead of a plastic coating that only ever looks worse.</p>
+        </div>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-8 mt-20 pt-12 border-t border-ivory/15">
+        <div>
+          <div class="serif text-4xl">40+</div>
+          <p class="text-sm text-ivory/60 mt-1">years, combined workshop experience</p>
+        </div>
+        <div>
+          <div class="serif text-4xl">6–10</div>
+          <p class="text-sm text-ivory/60 mt-1">weeks from order to delivery, every piece made to order</p>
+        </div>
+        <div>
+          <div class="serif text-4xl">25 yr</div>
+          <p class="text-sm text-ivory/60 mt-1">structural warranty on every frame we build</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROOMS GALLERY -->
+  <section id="rooms" class="max-w-7xl mx-auto px-6 sm:px-10 py-24">
+    <div class="max-w-xl mb-14 reveal">
+      <p class="text-sm text-clay font-medium mb-3">In the home</p>
+      <h2 class="serif text-4xl sm:text-5xl leading-tight">A few rooms our pieces have found their way into.</h2>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div class="col-span-2 row-span-2 reveal">
+        <div class="duotone rounded-lg aspect-square lg:aspect-auto lg:h-full"><img src="https://picsum.photos/id/1082/900/900" alt="A dining room styled with the Harlow table" loading="lazy" /></div>
+      </div>
+      <div class="reveal"><div class="duotone sagey rounded-lg aspect-square"><img src="https://picsum.photos/id/1074/450/450" alt="A reading corner with an Ash armchair" loading="lazy" /></div></div>
+      <div class="reveal"><div class="duotone rounded-lg aspect-square"><img src="https://picsum.photos/id/1039/450/450" alt="An entryway with an Oak console" loading="lazy" /></div></div>
+      <div class="reveal"><div class="duotone rounded-lg aspect-square"><img src="https://picsum.photos/id/1044/450/450" alt="A bedroom with a Cedar bed frame" loading="lazy" /></div></div>
+      <div class="reveal"><div class="duotone sagey rounded-lg aspect-square"><img src="https://picsum.photos/id/1048/450/450" alt="A home office with a Maple desk" loading="lazy" /></div></div>
+    </div>
+  </section>
+
+  <!-- MATERIALS -->
+  <section id="materials" class="border-y hairline bg-cream">
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 py-24 grid lg:grid-cols-2 gap-14 items-center">
+      <div class="reveal order-2 lg:order-1">
+        <p class="text-sm text-clay font-medium mb-3">Materials</p>
+        <h2 class="serif text-4xl leading-tight mb-6">Only what the forest can grow back.</h2>
+        <p class="text-walnut/70 leading-relaxed max-w-lg mb-8">
+          Every board we use is FSC-certified and traceable to the forest it came from. For every tree we take, our mill partners plant three. Finishes are plant-based oils and waxes — nothing that off-gasses, nothing you'd need to ventilate a room for.
+        </p>
+        <ul class="space-y-4">
+          <li class="flex gap-3">
+            <span class="text-clay mt-1">—</span>
+            <span class="text-walnut/75">Solid hardwood only: walnut, white oak, ash, cedar, maple and elm</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-clay mt-1">—</span>
+            <span class="text-walnut/75">FSC chain-of-custody certified from forest to workshop</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-clay mt-1">—</span>
+            <span class="text-walnut/75">Hardwax oil and beeswax finishes, VOC-free</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-clay mt-1">—</span>
+            <span class="text-walnut/75">Solid brass and blackened steel hardware, no plastic fittings</span>
+          </li>
+        </ul>
+      </div>
+      <div class="duotone rounded-2xl aspect-[4/5] order-1 lg:order-2 reveal">
+        <img src="https://picsum.photos/id/1082/700/900" alt="Close-up of walnut wood grain" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS / HOW TO ORDER -->
+  <section class="max-w-7xl mx-auto px-6 sm:px-10 py-24">
+    <div class="max-w-xl mb-14 reveal">
+      <p class="text-sm text-clay font-medium mb-3">Ordering</p>
+      <h2 class="serif text-4xl sm:text-5xl leading-tight">From first sketch to your dining room, in four stages.</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div class="border-t-2 border-clay pt-5 reveal">
+        <div class="text-sm text-walnut/40 mb-2">Stage 1</div>
+        <h3 class="serif text-xl mb-2">Consultation</h3>
+        <p class="text-walnut/65 text-sm leading-relaxed">A conversation about your space, your wood preference, and how the piece will actually be used.</p>
+      </div>
+      <div class="border-t-2 border-clay pt-5 reveal">
+        <div class="text-sm text-walnut/40 mb-2">Stage 2</div>
+        <h3 class="serif text-xl mb-2">Drawing &amp; quote</h3>
+        <p class="text-walnut/65 text-sm leading-relaxed">A scaled drawing and firm price before any wood is cut, so there are no surprises later.</p>
+      </div>
+      <div class="border-t-2 border-clay pt-5 reveal">
+        <div class="text-sm text-walnut/40 mb-2">Stage 3</div>
+        <h3 class="serif text-xl mb-2">The build</h3>
+        <p class="text-walnut/65 text-sm leading-relaxed">Six to ten weeks in the workshop, with photo updates at each major milestone.</p>
+      </div>
+      <div class="border-t-2 border-clay pt-5 reveal">
+        <div class="text-sm text-walnut/40 mb-2">Stage 4</div>
+        <h3 class="serif text-xl mb-2">White-glove delivery</h3>
+        <p class="text-walnut/65 text-sm leading-relaxed">Delivered, unpacked and placed by our own team — never handed off to a third-party carrier.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="bg-walnut text-ivory">
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 py-24">
+      <div class="max-w-xl mb-14 reveal">
+        <p class="text-sm text-clay font-medium mb-3">What clients say</p>
+        <h2 class="serif text-4xl sm:text-5xl leading-tight">A few words from people living with the furniture.</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-10">
+        <div class="reveal">
+          <p class="serif text-xl leading-snug mb-6">"Five years on, the table still gets the same reaction it did on day one. Worth every week we waited."</p>
+          <div class="flex items-center gap-3">
+            <div class="duotone rounded-full size-10"><img src="https://picsum.photos/id/64/80/80" alt="Nadia Hussain" loading="lazy" /></div>
+            <p class="text-sm text-ivory/60">Nadia Hussain · Lahore</p>
+          </div>
+        </div>
+        <div class="reveal">
+          <p class="serif text-xl leading-snug mb-6">"They talked me out of the wood I originally wanted because it wouldn't suit our light. That's rare, and it was right."</p>
+          <div class="flex items-center gap-3">
+            <div class="duotone sagey rounded-full size-10"><img src="https://picsum.photos/id/91/80/80" alt="Tom Okafor" loading="lazy" /></div>
+            <p class="text-sm text-ivory/60">Tom Okafor · Bristol</p>
+          </div>
+        </div>
+        <div class="reveal">
+          <p class="serif text-xl leading-snug mb-6">"The kind of furniture I imagine my kids arguing over one day. That was the whole point of buying it."</p>
+          <div class="flex items-center gap-3">
+            <div class="duotone rounded-full size-10"><img src="https://picsum.photos/id/177/80/80" alt="Elena Marsh" loading="lazy" /></div>
+            <p class="text-sm text-ivory/60">Elena Marsh · Austin</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRESS -->
+  <section class="border-b hairline">
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 py-14 flex flex-wrap items-center justify-between gap-8 text-walnut/40">
+      <span class="text-sm">As featured in</span>
+      <span class="serif text-lg">Dwell</span>
+      <span class="serif text-lg">Kinfolk</span>
+      <span class="serif text-lg">The Modern House</span>
+      <span class="serif text-lg">Cereal</span>
+      <span class="serif text-lg">Apartamento</span>
+    </div>
+  </section>
+
+  <!-- SHOWROOMS -->
+  <section id="showrooms" class="max-w-7xl mx-auto px-6 sm:px-10 py-24">
+    <div class="max-w-xl mb-14 reveal">
+      <p class="text-sm text-clay font-medium mb-3">Visit us</p>
+      <h2 class="serif text-4xl sm:text-5xl leading-tight">Three showrooms, open by appointment.</h2>
+    </div>
+    <div class="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x hairline border-t border-b hairline">
+      <div class="py-8 md:py-0 md:pr-10 reveal">
+        <h3 class="serif text-2xl mb-2">Workshop &amp; Studio</h3>
+        <p class="text-walnut/65 text-sm leading-relaxed">14 Millbrook Lane<br/>Hackney, London E9<br/>Tue–Sat, 10am–5pm</p>
+      </div>
+      <div class="py-8 md:py-0 md:px-10 reveal">
+        <h3 class="serif text-2xl mb-2">Manchester Showroom</h3>
+        <p class="text-walnut/65 text-sm leading-relaxed">2 Foundry Court<br/>Ancoats, Manchester<br/>Wed–Sun, 11am–6pm</p>
+      </div>
+      <div class="py-8 md:py-0 md:pl-10 reveal">
+        <h3 class="serif text-2xl mb-2">Bristol Showroom</h3>
+        <p class="text-walnut/65 text-sm leading-relaxed">9 Harbourside Row<br/>Bristol BS1<br/>By appointment only</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="bg-cream border-y hairline">
+    <div class="max-w-4xl mx-auto px-6 sm:px-10 py-24">
+      <div class="max-w-xl mb-12 reveal">
+        <p class="text-sm text-clay font-medium mb-3">Questions</p>
+        <h2 class="serif text-4xl leading-tight">Things people usually ask before ordering.</h2>
+      </div>
+      <div class="divide-y hairline border-t border-b hairline">
+        <details class="group py-6">
+          <summary class="flex items-center justify-between cursor-pointer list-none">
+            <span class="serif text-xl">How long does an order actually take?</span>
+            <span class="text-clay text-2xl leading-none group-open:rotate-45 transition-transform">+</span>
+          </summary>
+          <p class="text-walnut/65 mt-4 leading-relaxed max-w-2xl">Most pieces take six to ten weeks from confirmed drawing to delivery. Larger case pieces or busy seasons can run closer to twelve — we'll always give you a real date, not an optimistic one.</p>
+        </details>
+        <details class="group py-6">
+          <summary class="flex items-center justify-between cursor-pointer list-none">
+            <span class="serif text-xl">Can I customise dimensions or wood?</span>
+            <span class="text-clay text-2xl leading-none group-open:rotate-45 transition-transform">+</span>
+          </summary>
+          <p class="text-walnut/65 mt-4 leading-relaxed max-w-2xl">Every piece is made to order, so dimensions are adjustable within the limits of the design, and you can choose from any wood in our current stock. Custom species requests are handled case by case.</p>
+        </details>
+        <details class="group py-6">
+          <summary class="flex items-center justify-between cursor-pointer list-none">
+            <span class="serif text-xl">What does the warranty actually cover?</span>
+            <span class="text-clay text-2xl leading-none group-open:rotate-45 transition-transform">+</span>
+          </summary>
+          <p class="text-walnut/65 mt-4 leading-relaxed max-w-2xl">25 years against structural joinery failure under normal household use. Finish wear isn't covered, but it's designed to be refreshed at home — we'll show you how at delivery.</p>
+        </details>
+        <details class="group py-6">
+          <summary class="flex items-center justify-between cursor-pointer list-none">
+            <span class="serif text-xl">Do you deliver outside the UK?</span>
+            <span class="text-clay text-2xl leading-none group-open:rotate-45 transition-transform">+</span>
+          </summary>
+          <p class="text-walnut/65 mt-4 leading-relaxed max-w-2xl">Yes — we ship across Europe and to select cities in North America via specialist fine-furniture freight. Delivery costs are quoted individually based on the piece and destination.</p>
+        </details>
+        <details class="group py-6">
+          <summary class="flex items-center justify-between cursor-pointer list-none">
+            <span class="serif text-xl">How do I care for solid wood long-term?</span>
+            <span class="text-clay text-2xl leading-none group-open:rotate-45 transition-transform">+</span>
+          </summary>
+          <p class="text-walnut/65 mt-4 leading-relaxed max-w-2xl">A yearly hardwax oil top-up keeps the finish healthy — it takes about twenty minutes per piece. We send every client a small care kit and a short guide with their delivery.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER / CTA -->
+  <section id="newsletter" class="relative">
+    <div class="duotone sagey h-[420px]">
+      <img src="https://picsum.photos/id/1040/1800/900" alt="Workshop bench with tools and offcuts" loading="lazy" />
+    </div>
+    <div class="absolute inset-0 flex items-center">
+      <div class="max-w-3xl mx-auto px-6 sm:px-10 text-center text-ivory">
+        <p class="text-sm text-ivory/70 mb-4">Stay in the loop</p>
+        <h2 class="serif text-3xl sm:text-4xl leading-tight mb-8">New pieces, workshop notes, and first access to limited runs — a few times a year, never more.</h2>
+        <form class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto" onsubmit="return false;">
+          <input type="email" placeholder="you@email.com" class="flex-1 rounded-full px-5 py-3 text-walnut bg-ivory placeholder:text-walnut/40" />
+          <button type="submit" class="rounded-full bg-clay text-ivory font-medium px-6 py-3 hover:bg-ivory hover:text-walnut transition-colors">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-walnut text-ivory/60">
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 py-16 grid sm:grid-cols-2 lg:grid-cols-5 gap-10">
+      <div class="lg:col-span-2">
+        <a href="#top" class="serif text-2xl text-ivory">Ivory <span class="serif-i text-clay">&amp;</span> Oak</a>
+        <p class="mt-4 text-sm max-w-xs leading-relaxed">Solid wood furniture, hand-joined in our London workshop and built to be repaired, not replaced.</p>
+      </div>
+      <div>
+        <h4 class="text-ivory text-sm font-medium mb-4">Shop</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#collections" class="hover:text-ivory transition-colors">Collections</a></li>
+          <li><a href="#" class="hover:text-ivory transition-colors">Dining</a></li>
+          <li><a href="#" class="hover:text-ivory transition-colors">Seating</a></li>
+          <li><a href="#" class="hover:text-ivory transition-colors">Storage</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-ivory text-sm font-medium mb-4">Studio</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#craft" class="hover:text-ivory transition-colors">Craftsmanship</a></li>
+          <li><a href="#materials" class="hover:text-ivory transition-colors">Materials</a></li>
+          <li><a href="#showrooms" class="hover:text-ivory transition-colors">Showrooms</a></li>
+          <li><a href="#faq" class="hover:text-ivory transition-colors">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-ivory text-sm font-medium mb-4">Contact</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li>hello@ivoryandoak.co</li>
+          <li>+44 20 7946 0912</li>
+          <li>14 Millbrook Lane, London E9</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-ivory/10">
+      <div class="max-w-7xl mx-auto px-6 sm:px-10 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-ivory/40">
+        <p>© 2026 Ivory &amp; Oak. All rights reserved.</p>
+        <div class="flex gap-6">
+          <a href="#" class="hover:text-ivory transition-colors">Privacy</a>
+          <a href="#" class="hover:text-ivory transition-colors">Terms</a>
+          <a href="#" class="hover:text-ivory transition-colors">Shipping</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+
+</body>
+</html>

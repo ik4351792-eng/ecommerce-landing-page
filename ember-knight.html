@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ember Knight — a pixel-lit adventure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#14121f;
+    --panel:#1e1a2e;
+    --panel-2:#251f38;
+    --line:#332c4a;
+    --parchment:#f2e9d8;
+    --parchment-dim:#c9c0ac;
+    --ember:#ff7a45;
+    --ember-dim:#c9552a;
+    --gold:#f4c95d;
+    --moss:#6fae5c;
+    --steel:#8b93ab;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--void);
+    color:var(--parchment);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:17px;
+    line-height:1.6;
+  }
+  img,svg{display:block;}
+  .pixel{font-family:'Press Start 2P', monospace;}
+  a{color:inherit;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  button{font:inherit;}
+
+  #embers{position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.55;}
+  header, main, footer, .healthbar{position:relative; z-index:1;}
+
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(20,18,31,.92);
+    border-bottom:1px solid var(--line);
+    backdrop-filter: blur(6px);
+  }
+  .nav-row{display:flex; align-items:center; justify-content:space-between; height:76px;}
+  .brand{display:flex; align-items:center; gap:12px; text-decoration:none;}
+  .brand-mark{width:26px;height:26px;}
+  .brand-word{font-size:13px; letter-spacing:1px;}
+  nav.links{display:flex; gap:26px;}
+  nav.links a{
+    text-decoration:none; color:var(--steel); font-size:14.5px; font-weight:500;
+    padding-bottom:4px; border-bottom:2px solid transparent;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  nav.links a:hover{color:var(--parchment); border-color:var(--ember);}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px;
+    padding:12px 20px; text-decoration:none; cursor:pointer;
+    border:2px solid var(--parchment); background:var(--ember); color:var(--void);
+    box-shadow:4px 4px 0 0 var(--void);
+    transition:transform .1s ease, box-shadow .1s ease;
+  }
+  .btn:hover{transform:translate(-2px,-2px); box-shadow:6px 6px 0 0 var(--void);}
+  .btn:active{transform:translate(1px,1px); box-shadow:1px 1px 0 0 var(--void);}
+  .btn.ghost{background:transparent; color:var(--parchment); box-shadow:4px 4px 0 0 var(--line);}
+  .btn.ghost:hover{box-shadow:6px 6px 0 0 var(--line);}
+  .btn.small{padding:9px 14px; font-size:13px;}
+
+  .hero{padding:76px 0 96px;}
+  .hero-grid{display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;}
+  .kicker{font-size:12px; color:var(--gold); font-weight:600; letter-spacing:.4px;}
+  h1.title{
+    font-family:'Press Start 2P', monospace;
+    font-size:38px; line-height:1.5; margin:18px 0 22px; color:var(--parchment);
+    text-shadow:3px 3px 0 var(--ember-dim);
+  }
+  .lede{font-size:18px; color:var(--parchment-dim); max-width:46ch; margin:0 0 30px;}
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:22px;}
+  .cycle-row{display:flex; align-items:center; gap:10px; margin-bottom:34px;}
+  .cycle-row span{font-size:13px; color:var(--steel);}
+  .hero-meta{display:flex; gap:26px; flex-wrap:wrap; font-size:14px; color:var(--steel);}
+  .hero-meta strong{color:var(--parchment); display:block; font-size:20px; font-family:'Press Start 2P'; margin-bottom:4px;}
+
+  .console{background:#0c0a14; padding:14px; border:3px solid var(--parchment); box-shadow:8px 8px 0 0 rgba(0,0,0,.5);}
+  .screen{position:relative; overflow:hidden; aspect-ratio:4/3; background:linear-gradient(#241c3a,#150f24 70%); transition:background .4s ease;}
+  .console.night .screen{background:linear-gradient(#0c0a18,#07060f 70%);}
+  .screen svg{width:100%; height:100%;}
+  .sun{display:block;} .moon{display:none;}
+  .console.night .sun{display:none;} .console.night .moon{display:block;}
+  .scanlines{position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(rgba(0,0,0,0) 0 2px, rgba(0,0,0,.22) 2px 4px); mix-blend-mode:multiply;}
+  .console-label{display:flex; justify-content:space-between; align-items:center; padding:14px 4px 2px; font-size:11px; color:var(--steel);}
+  .rec-dot{display:inline-block; width:7px;height:7px;background:var(--ember); margin-right:6px; animation:blink 1.6s steps(1) infinite;}
+  @keyframes blink{50%{opacity:.2;}}
+  @keyframes flicker{0%,19%,21%,23%,80%,100%{opacity:1;}20%,22%,79%{opacity:.55;}}
+  .flame-glow{animation:flicker 3.4s infinite;}
+
+  section{padding:88px 0;}
+  section + section{border-top:1px solid var(--line);}
+  .section-head{max-width:640px; margin-bottom:56px;}
+  .section-head h2{font-size:30px; margin:0 0 14px; font-weight:700; color:var(--parchment);}
+  .section-head p{color:var(--parchment-dim); font-size:16.5px; margin:0;}
+
+  .route{position:relative;}
+  .trail{position:absolute; left:0; right:0; top:96px; height:0; border-top:3px dashed var(--line); z-index:0;}
+  .stages{display:grid; grid-template-columns:repeat(3,1fr); gap:36px; position:relative; z-index:1;}
+  .stage{display:flex; flex-direction:column; align-items:flex-start;}
+  .stage:nth-child(2){margin-top:64px;}
+  .stage:nth-child(3){margin-top:16px;}
+  .stage-num{font-family:'Press Start 2P'; font-size:12px; color:var(--void); background:var(--gold); width:36px;height:36px; display:flex; align-items:center; justify-content:center; border:2px solid var(--parchment); margin-bottom:18px;}
+  .stage[data-accent="moss"] .stage-num{background:var(--moss);}
+  .stage[data-accent="ember"] .stage-num{background:var(--ember);}
+  .stage-icon{width:52px; height:52px; margin-bottom:16px;}
+  .stage h3{font-size:19px; margin:0 0 8px;}
+  .stage p{font-size:15px; color:var(--parchment-dim); margin:0;}
+
+  .cast-row{display:grid; grid-template-columns:repeat(3,1fr); gap:28px;}
+  .cast-card{background:var(--panel); border:2px solid var(--line); padding:24px; display:flex; gap:18px; align-items:flex-start;}
+  .cast-portrait{flex:0 0 auto; width:64px; height:64px; background:#0c0a14; border:2px solid var(--line); padding:6px;}
+  .cast-portrait svg{width:100%; height:100%;}
+  .cast-role{font-size:11px; color:var(--gold); letter-spacing:.3px; text-transform:uppercase; margin-bottom:6px;}
+  .cast-card h3{margin:0 0 8px; font-size:18px;}
+  .cast-card p{margin:0; font-size:14px; color:var(--parchment-dim);}
+
+  .boss-row{display:grid; grid-template-columns:repeat(3,1fr); gap:28px;}
+  .boss-card{background:var(--panel-2); border:2px solid var(--line); padding:0; overflow:hidden;}
+  .boss-art{background:#0c0a14; padding:20px; display:flex; justify-content:center;}
+  .boss-art svg{width:96px; height:96px;}
+  .boss-body{padding:20px 20px 22px;}
+  .boss-region{font-size:11px; color:var(--steel); margin-bottom:6px;}
+  .boss-card h3{margin:0 0 10px; font-size:19px;}
+  .hp-track{height:12px; background:#0c0a14; border:2px solid var(--line); margin:14px 0 10px;}
+  .hp-fill{height:100%; background:var(--ember);}
+  .boss-card p{margin:0; font-size:14px; color:var(--parchment-dim);}
+
+  .strip{display:flex; gap:24px; overflow-x:auto; padding-bottom:16px; scroll-snap-type:x mandatory;}
+  .strip::-webkit-scrollbar{height:8px;}
+  .strip::-webkit-scrollbar-thumb{background:var(--line);}
+  .shot{flex:0 0 340px; scroll-snap-align:start; background:#0c0a14; padding:10px; border:3px solid var(--parchment); box-shadow:6px 6px 0 0 rgba(0,0,0,.5);}
+  .shot .screen{aspect-ratio:16/10;}
+  .shot figcaption{padding:12px 4px 2px; font-size:14px; color:var(--parchment-dim);}
+  figure{margin:0;}
+
+  .tracklist{border:2px solid var(--line); background:var(--panel);}
+  .track{display:grid; grid-template-columns:32px 1fr auto 60px; align-items:center; gap:18px; padding:16px 20px; border-bottom:1px solid var(--line); cursor:default;}
+  .track:last-child{border-bottom:none;}
+  .track:hover, .track.now{background:var(--panel-2);}
+  .track-num{font-family:'Press Start 2P'; font-size:11px; color:var(--steel);}
+  .track-title{font-size:15.5px;}
+  .track-title small{display:block; color:var(--steel); font-size:12.5px; margin-top:3px;}
+  .track-time{font-size:13px; color:var(--steel); font-variant-numeric:tabular-nums;}
+  .eq{display:flex; align-items:flex-end; gap:3px; height:16px; justify-self:end;}
+  .eq span{width:3px; background:var(--ember); animation:eq 1s ease-in-out infinite;}
+  .eq span:nth-child(1){animation-delay:0s;} .eq span:nth-child(2){animation-delay:.2s;} .eq span:nth-child(3){animation-delay:.4s;} .eq span:nth-child(4){animation-delay:.1s;}
+  @keyframes eq{0%,100%{height:3px;}50%{height:16px;}}
+  .track:not(.now) .eq{opacity:.25;}
+  .track:not(.now) .eq span{animation-play-state:paused;}
+
+  .save-row{display:grid; grid-template-columns:repeat(3,1fr); gap:28px;}
+  .save-card{background:var(--panel); border:2px dashed var(--line); padding:22px;}
+  .save-top{display:flex; justify-content:space-between; align-items:center; font-family:'Press Start 2P'; font-size:11px; color:var(--gold); margin-bottom:14px;}
+  .save-meta{font-size:12.5px; color:var(--steel); margin-bottom:16px;}
+  .save-card blockquote{margin:0 0 16px; font-size:15.5px; color:var(--parchment); font-style:normal;}
+  .save-player{font-size:13px; color:var(--steel);}
+
+  .dialogue{display:flex; gap:20px; align-items:flex-start;}
+  .npc-portrait{flex:0 0 auto; width:72px; height:72px; background:#0c0a14; border:3px solid var(--parchment); padding:8px;}
+  .npc-portrait svg{width:100%; height:100%;}
+  .dialogue-box{flex:1; background:var(--panel); border:2px solid var(--line);}
+  .npc-name{font-family:'Press Start 2P'; font-size:11px; color:var(--gold); padding:14px 20px 0;}
+  .faq-item{border-top:1px solid var(--line);}
+  .faq-item:first-of-type{border-top:none;}
+  .faq-q{width:100%; text-align:left; background:none; border:none; color:var(--parchment); padding:16px 20px; font-size:15.5px; font-weight:600; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:14px;}
+  .faq-q .mark{font-family:'Press Start 2P'; font-size:11px; color:var(--ember); transition:transform .15s ease;}
+  .faq-q[aria-expanded="true"] .mark{transform:rotate(90deg);}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+  .faq-a p{margin:0; padding:0 20px 18px; font-size:14.5px; color:var(--parchment-dim); max-width:64ch;}
+
+  .cart-row{display:grid; grid-template-columns:repeat(3,1fr); gap:30px;}
+  .cart{background:var(--panel); border:2px solid var(--line); padding:26px 22px 22px; transition:transform .15s ease; position:relative;}
+  .cart::before{content:""; position:absolute; top:-10px; left:22px; right:22px; height:10px; background:var(--panel-2); border:2px solid var(--line); border-bottom:none;}
+  .cart:hover{transform:translateY(-10px);}
+  .cart .plat{font-family:'Press Start 2P'; font-size:12px; color:var(--gold); margin-bottom:14px;}
+  .cart h3{margin:0 0 10px; font-size:20px;}
+  .cart p{color:var(--parchment-dim); font-size:14.5px; margin:0 0 22px;}
+  .cart .price{font-size:26px; font-weight:700; margin-bottom:18px; color:var(--parchment);}
+  .cart .price span{font-size:14px; color:var(--steel); font-weight:400;}
+
+  .board{background:#2a2116; border:3px solid #4a3a24; padding:44px; position:relative; background-image:repeating-linear-gradient(90deg, rgba(0,0,0,.08) 0 2px, transparent 2px 40px);}
+  .pin{position:absolute; top:-9px; left:36px; width:14px; height:14px; background:var(--ember); border:2px solid var(--void);}
+  .board h2{margin:0 0 10px; font-size:26px;}
+  .board p{margin:0 0 26px; color:var(--parchment-dim); max-width:52ch;}
+  .board-form{display:flex; gap:12px; flex-wrap:wrap; max-width:520px;}
+  .board-form input{flex:1; min-width:220px; padding:13px 14px; background:var(--void); border:2px solid var(--parchment); color:var(--parchment); font-family:inherit; font-size:14.5px;}
+  .board-form input::placeholder{color:var(--steel);}
+  .board-note{margin-top:14px; font-size:13px; color:var(--gold); min-height:18px;}
+
+  .healthbar{display:flex; height:10px; position:relative; overflow:visible;}
+  .healthbar span{flex:1; background:var(--ember);}
+  .healthbar span:nth-child(6n){background:var(--gold);}
+  .healthbar span:nth-child(11n){background:var(--void);}
+  .traveling-ember{position:absolute; top:-4px; left:0; width:8px; height:8px; background:var(--parchment); box-shadow:0 0 8px 3px var(--gold); animation:travel 9s linear infinite;}
+  @keyframes travel{0%{left:0;}100%{left:calc(100% - 8px);}}
+
+  footer{padding:60px 0 40px;}
+  .foot-grid{display:flex; justify-content:space-between; flex-wrap:wrap; gap:30px; margin-top:34px;}
+  .foot-grid h4{font-size:13px; color:var(--steel); margin:0 0 14px; font-weight:600;}
+  .foot-grid ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .foot-grid a{text-decoration:none; color:var(--parchment-dim); font-size:14.5px;}
+  .foot-grid a:hover{color:var(--parchment);}
+  .foot-bottom{margin-top:50px; font-size:13px; color:var(--steel); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+
+  @media (prefers-reduced-motion: reduce){
+    .flame-glow, .rec-dot, .eq span, .traveling-ember{animation:none !important;}
+  }
+  @media (max-width:880px){
+    .hero-grid{grid-template-columns:1fr;}
+    .stages{grid-template-columns:1fr; gap:40px;}
+    .stage:nth-child(2), .stage:nth-child(3){margin-top:0;}
+    .trail{display:none;}
+    .cart-row, .cast-row, .boss-row, .save-row{grid-template-columns:1fr;}
+    .track{grid-template-columns:24px 1fr auto;}
+    .eq{display:none;}
+    .dialogue{flex-direction:column;}
+    nav.links{display:none;}
+    h1.title{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="embers"></canvas>
+
+<header>
+  <div class="wrap nav-row">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <rect width="8" height="8" fill="#14121f"/>
+        <rect x="3" y="0" width="2" height="1" fill="#f4c95d"/>
+        <rect x="2" y="1" width="4" height="1" fill="#ff7a45"/>
+        <rect x="1" y="2" width="6" height="1" fill="#ff7a45"/>
+        <rect x="1" y="3" width="6" height="1" fill="#c9552a"/>
+        <rect x="2" y="4" width="4" height="1" fill="#c9552a"/>
+        <rect x="3" y="5" width="2" height="1" fill="#f4c95d"/>
+      </svg>
+      <span class="pixel brand-word">EMBER KNIGHT</span>
+    </a>
+    <nav class="links">
+      <a href="#world">World</a>
+      <a href="#cast">Cast</a>
+      <a href="#bosses">Bosses</a>
+      <a href="#screens">Screenshots</a>
+      <a href="#soundtrack">Soundtrack</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn small" href="#platforms">Wishlist now</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="kicker">A SOLO-DEV ACTION-ADVENTURE · OUT 2026</div>
+        <h1 class="title">EMBER<br>KNIGHT</h1>
+        <p class="lede">Carry the last coal of a dying sun through a kingdom gone cold. Every screen is hand-placed, every torch is a real light source, and every fight is decided by how well you read the dark.</p>
+        <div class="hero-ctas">
+          <a class="btn" href="#platforms">Wishlist on Steam</a>
+          <a class="btn ghost" href="#screens">Watch the trailer</a>
+        </div>
+        <div class="cycle-row">
+          <button class="btn ghost small" type="button" id="cycleBtn">Shift to night</button>
+          <span>the console screen keeps its own clock</span>
+        </div>
+        <div class="hero-meta">
+          <div><strong>3</strong>years in development</div>
+          <div><strong>40+</strong>hand-built rooms</div>
+          <div><strong>1</strong>developer, no crunch</div>
+        </div>
+      </div>
+
+      <div class="console">
+        <div class="screen">
+          <svg viewBox="0 0 160 120" shape-rendering="crispEdges" preserveAspectRatio="xMidYMid slice">
+            <rect width="160" height="120" fill="#241c3a"/>
+            <rect class="sun" x="128" y="14" width="10" height="10" fill="#f4c95d"/>
+            <g class="moon">
+              <rect x="128" y="14" width="10" height="10" fill="#e7e2d3"/>
+              <rect x="132" y="14" width="6" height="10" fill="#241c3a"/>
+            </g>
+            <rect x="0" y="70" width="160" height="10" fill="#3a3155"/>
+            <rect x="10" y="60" width="30" height="10" fill="#3a3155"/>
+            <rect x="70" y="58" width="40" height="12" fill="#3a3155"/>
+            <rect x="0" y="80" width="160" height="40" fill="#1c1730"/>
+            <rect x="0" y="72" width="24" height="8" fill="#1c1730"/>
+            <rect x="90" y="74" width="50" height="6" fill="#1c1730"/>
+            <rect x="34" y="42" width="18" height="46" fill="#15101f"/>
+            <rect x="30" y="36" width="26" height="8" fill="#15101f"/>
+            <rect x="40" y="50" width="6" height="8" fill="#f4c95d" class="flame-glow"/>
+            <rect x="72" y="92" width="4" height="10" fill="#0c0914"/>
+            <rect x="76" y="86" width="4" height="16" fill="#0c0914"/>
+            <rect x="80" y="82" width="6" height="20" fill="#0c0914"/>
+            <rect x="86" y="80" width="4" height="6" fill="#0c0914"/>
+            <g class="flame-glow">
+              <rect x="80" y="70" width="4" height="4" fill="#ff7a45"/>
+              <rect x="79" y="74" width="6" height="4" fill="#f4c95d"/>
+              <rect x="81" y="78" width="2" height="4" fill="#ff7a45"/>
+            </g>
+            <rect x="81" y="82" width="2" height="6" fill="#5a4a35"/>
+          </svg>
+          <div class="scanlines"></div>
+        </div>
+        <div class="console-label"><span><span class="rec-dot"></span>LIVE CAPTURE</span><span>ROOM 14 — THE LOW TOWER</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="world">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Three cinders, one kingdom</h2>
+        <p>The world splits into three failing regions, each keeping its own kind of light alive. You choose the order you save them in — and each choice changes who's still standing by the end.</p>
+      </div>
+      <div class="route">
+        <div class="trail"></div>
+        <div class="stages">
+          <div class="stage" data-accent="moss">
+            <div class="stage-num pixel">1</div>
+            <svg class="stage-icon" viewBox="0 0 12 12" shape-rendering="crispEdges">
+              <rect x="5" y="0" width="2" height="3" fill="#6fae5c"/>
+              <rect x="3" y="2" width="6" height="2" fill="#6fae5c"/>
+              <rect x="2" y="4" width="8" height="2" fill="#588f47"/>
+              <rect x="1" y="6" width="10" height="2" fill="#588f47"/>
+              <rect x="5" y="8" width="2" height="4" fill="#4a3524"/>
+            </svg>
+            <h3>The Hollow Wood</h3>
+            <p>A forest that grows in reverse. Every step back in, its trees get a season younger — and the wildlife remembers.</p>
+          </div>
+          <div class="stage" data-accent="gold">
+            <div class="stage-num pixel">2</div>
+            <svg class="stage-icon" viewBox="0 0 12 12" shape-rendering="crispEdges">
+              <rect x="4" y="1" width="4" height="2" fill="#8b93ab"/>
+              <rect x="2" y="3" width="8" height="2" fill="#8b93ab"/>
+              <rect x="1" y="5" width="10" height="2" fill="#6c7284"/>
+              <rect x="5" y="7" width="2" height="2" fill="#f4c95d"/>
+              <rect x="0" y="9" width="12" height="2" fill="#6c7284"/>
+            </svg>
+            <h3>The Cinder Caves</h3>
+            <p>Underground rivers of light instead of water. Wade in too far and the caves start to remember you differently.</p>
+          </div>
+          <div class="stage" data-accent="ember">
+            <div class="stage-num pixel">3</div>
+            <svg class="stage-icon" viewBox="0 0 12 12" shape-rendering="crispEdges">
+              <rect x="5" y="0" width="2" height="4" fill="#f2e9d8"/>
+              <rect x="3" y="4" width="6" height="2" fill="#f2e9d8"/>
+              <rect x="2" y="6" width="8" height="4" fill="#c9552a"/>
+              <rect x="4" y="10" width="4" height="2" fill="#ff7a45"/>
+            </svg>
+            <h3>The Sky Bastion</h3>
+            <p>The last fortress, built high enough to keep its own weather. It has not let anyone leave in eleven years.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cast">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Who's still lighting the way</h2>
+        <p>A small, original cast — nobody borrowed, nobody licensed. Everyone here answers to nobody but the story.</p>
+      </div>
+      <div class="cast-row">
+        <div class="cast-card">
+          <div class="cast-portrait">
+            <svg viewBox="0 0 14 14" shape-rendering="crispEdges">
+              <rect x="4" y="1" width="6" height="4" fill="#c9552a"/>
+              <rect x="3" y="5" width="8" height="5" fill="#8b93ab"/>
+              <rect x="5" y="10" width="4" height="3" fill="#6c7284"/>
+              <rect x="6" y="4" width="2" height="2" fill="#f2e9d8"/>
+            </svg>
+          </div>
+          <div>
+            <div class="cast-role">Protagonist</div>
+            <h3>Rue</h3>
+            <p>Former lamplighter, current arsonist of last resort. Carries the coal in a cracked lantern, one hand always over the glass.</p>
+          </div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-portrait">
+            <svg viewBox="0 0 14 14" shape-rendering="crispEdges">
+              <rect x="6" y="2" width="2" height="2" fill="#f4c95d"/>
+              <rect x="5" y="4" width="4" height="2" fill="#f4c95d"/>
+              <rect x="4" y="6" width="6" height="3" fill="#ff7a45"/>
+              <rect x="6" y="9" width="2" height="3" fill="#c9552a"/>
+            </svg>
+          </div>
+          <div>
+            <div class="cast-role">Companion</div>
+            <h3>Cinder</h3>
+            <p>A moth made of loose flame. Won't fly in a straight line, won't explain why, always right about which door not to open.</p>
+          </div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-portrait">
+            <svg viewBox="0 0 14 14" shape-rendering="crispEdges">
+              <rect x="3" y="1" width="8" height="3" fill="#3a3155"/>
+              <rect x="2" y="4" width="10" height="6" fill="#241c3a"/>
+              <rect x="5" y="6" width="1" height="1" fill="#f4c95d"/>
+              <rect x="8" y="6" width="1" height="1" fill="#f4c95d"/>
+              <rect x="4" y="10" width="6" height="3" fill="#15101f"/>
+            </svg>
+          </div>
+          <div>
+            <div class="cast-role">Warden of the Bastion</div>
+            <h3>Aurelac</h3>
+            <p>Sealed the last fortress eleven years ago to keep something out. Has not yet said what, or whether it worked.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="bosses">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Three things guarding their dark</h2>
+        <p>No boss is a damage sponge. Each one changes the rules of its room the moment the fight starts.</p>
+      </div>
+      <div class="boss-row">
+        <div class="boss-card">
+          <div class="boss-art">
+            <svg viewBox="0 0 20 20" shape-rendering="crispEdges">
+              <rect x="6" y="2" width="8" height="4" fill="#588f47"/>
+              <rect x="4" y="6" width="12" height="6" fill="#4a7a3a"/>
+              <rect x="2" y="6" width="2" height="6" fill="#4a3524"/>
+              <rect x="16" y="6" width="2" height="6" fill="#4a3524"/>
+              <rect x="6" y="12" width="8" height="4" fill="#3a2a1c"/>
+            </svg>
+          </div>
+          <div class="boss-body">
+            <div class="boss-region">The Hollow Wood</div>
+            <h3>The Root-That-Remembers</h3>
+            <div class="hp-track"><div class="hp-fill" style="width:78%; background:var(--moss);"></div></div>
+            <p>Grows back whatever you cut. You're not meant to kill it — you're meant to convince it the season changed.</p>
+          </div>
+        </div>
+        <div class="boss-card">
+          <div class="boss-art">
+            <svg viewBox="0 0 20 20" shape-rendering="crispEdges">
+              <rect x="2" y="8" width="16" height="4" fill="#3a3155"/>
+              <rect x="4" y="4" width="4" height="4" fill="#3a3155"/>
+              <rect x="12" y="4" width="4" height="4" fill="#3a3155"/>
+              <rect x="4" y="12" width="4" height="4" fill="#3a3155"/>
+              <rect x="12" y="12" width="4" height="4" fill="#3a3155"/>
+              <rect x="9" y="9" width="2" height="2" fill="#f4c95d"/>
+            </svg>
+          </div>
+          <div class="boss-body">
+            <div class="boss-region">The Cinder Caves</div>
+            <h3>The Long Wyrm</h3>
+            <div class="hp-track"><div class="hp-fill" style="width:52%; background:var(--gold);"></div></div>
+            <p>You never see all of it at once. The fight is a sequence of rooms, and it's already in the next one.</p>
+          </div>
+        </div>
+        <div class="boss-card">
+          <div class="boss-art">
+            <svg viewBox="0 0 20 20" shape-rendering="crispEdges">
+              <rect x="5" y="1" width="10" height="4" fill="#8b93ab"/>
+              <rect x="3" y="5" width="14" height="9" fill="#6c7284"/>
+              <rect x="8" y="8" width="4" height="4" fill="#f2e9d8"/>
+              <rect x="6" y="14" width="8" height="4" fill="#4a4f5e"/>
+            </svg>
+          </div>
+          <div class="boss-body">
+            <div class="boss-region">The Sky Bastion</div>
+            <h3>Warden Aurelac</h3>
+            <div class="hp-track"><div class="hp-fill" style="width:100%; background:var(--ember);"></div></div>
+            <p>Not a monster — a person who has been right about a threat for eleven straight years, and it shows.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screens">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Every room, lit by hand</h2>
+        <p>No dynamic global lighting — each screen has its own light sources placed and tuned individually, the way it was done when memory was measured in kilobytes.</p>
+      </div>
+      <div class="strip">
+        <figure class="shot">
+          <div class="screen">
+            <svg viewBox="0 0 160 100" shape-rendering="crispEdges" preserveAspectRatio="xMidYMid slice">
+              <rect width="160" height="100" fill="#1c1730"/>
+              <rect y="70" width="160" height="30" fill="#100c1c"/>
+              <rect x="20" y="30" width="14" height="40" fill="#100c1c"/>
+              <rect x="126" y="30" width="14" height="40" fill="#100c1c"/>
+              <rect x="70" y="20" width="20" height="50" fill="#100c1c"/>
+              <rect x="76" y="38" width="8" height="6" fill="#f4c95d" class="flame-glow"/>
+            </svg>
+            <div class="scanlines"></div>
+          </div>
+          <figcaption>The Hollow Wood — first light</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="screen">
+            <svg viewBox="0 0 160 100" shape-rendering="crispEdges" preserveAspectRatio="xMidYMid slice">
+              <rect width="160" height="100" fill="#14101f"/>
+              <rect y="60" width="160" height="40" fill="#0c0914"/>
+              <rect x="10" y="10" width="6" height="50" fill="#3a3155"/>
+              <rect x="144" y="10" width="6" height="50" fill="#3a3155"/>
+              <rect x="60" y="50" width="6" height="6" fill="#ff7a45" class="flame-glow"/>
+              <rect x="94" y="50" width="6" height="6" fill="#ff7a45" class="flame-glow"/>
+            </svg>
+            <div class="scanlines"></div>
+          </div>
+          <figcaption>The Cinder Caves — the long river</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="screen">
+            <svg viewBox="0 0 160 100" shape-rendering="crispEdges" preserveAspectRatio="xMidYMid slice">
+              <rect width="160" height="100" fill="#241c3a"/>
+              <rect y="76" width="160" height="24" fill="#0c0914"/>
+              <rect x="40" y="20" width="80" height="56" fill="#15101f"/>
+              <rect x="50" y="30" width="10" height="14" fill="#f4c95d" class="flame-glow"/>
+              <rect x="100" y="30" width="10" height="14" fill="#f4c95d" class="flame-glow"/>
+            </svg>
+            <div class="scanlines"></div>
+          </div>
+          <figcaption>The Sky Bastion — the sealed hall</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="soundtrack">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>A score played on real hardware</h2>
+        <p>Every track is composed on a chiptune tracker, then run back through a tape hiss pass so it sounds like it's coming out of an old speaker, not a plugin. Click a row to preview.</p>
+      </div>
+      <div class="tracklist">
+        <div class="track now">
+          <span class="track-num pixel">01</span>
+          <span class="track-title">Lamplighter's Round<small>Hollow Wood — overworld theme</small></span>
+          <span class="track-time">2:14</span>
+          <span class="eq"><span></span><span></span><span></span><span></span></span>
+        </div>
+        <div class="track">
+          <span class="track-num pixel">02</span>
+          <span class="track-title">What the Caves Keep<small>Cinder Caves — exploration</small></span>
+          <span class="track-time">3:02</span>
+          <span class="eq"><span></span><span></span><span></span><span></span></span>
+        </div>
+        <div class="track">
+          <span class="track-num pixel">03</span>
+          <span class="track-title">Root and Season<small>Boss theme — the Root-That-Remembers</small></span>
+          <span class="track-time">2:47</span>
+          <span class="eq"><span></span><span></span><span></span><span></span></span>
+        </div>
+        <div class="track">
+          <span class="track-num pixel">04</span>
+          <span class="track-title">Eleven Years Sealed<small>Sky Bastion — theme</small></span>
+          <span class="track-time">3:31</span>
+          <span class="eq"><span></span><span></span><span></span><span></span></span>
+        </div>
+        <div class="track">
+          <span class="track-num pixel">05</span>
+          <span class="track-title">The Coal Doesn't Ask<small>Ending — credits</small></span>
+          <span class="track-time">4:05</span>
+          <span class="eq"><span></span><span></span><span></span><span></span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Other people's save files</h2>
+        <p>Pulled from the closed beta, with permission and their playtime attached.</p>
+      </div>
+      <div class="save-row">
+        <div class="save-card">
+          <div class="save-top"><span>SAVE 01</span><span>87%</span></div>
+          <div class="save-meta">14h 32m playtime · Hollow Wood cleared</div>
+          <blockquote>"I stopped playing this like a platformer around hour two and started playing it like I was actually afraid of the dark. Which, it turns out, is the point."</blockquote>
+          <div class="save-player">Player: mothlit_kay</div>
+        </div>
+        <div class="save-card">
+          <div class="save-top"><span>SAVE 02</span><span>100%</span></div>
+          <div class="save-meta">21h 08m playtime · full clear, no deaths in Bastion</div>
+          <blockquote>"The wyrm fight rearranged the way I think about boss design. I still don't know how much of that room was real."</blockquote>
+          <div class="save-player">Player: ferro.dusk</div>
+        </div>
+        <div class="save-card">
+          <div class="save-top"><span>SAVE 03</span><span>63%</span></div>
+          <div class="save-meta">9h 51m playtime · demo + first closed beta build</div>
+          <blockquote>"Turned my brightness all the way down out of spite and the game just... let me. That's the whole review."</blockquote>
+          <div class="save-player">Player: ninewick</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Ask the moth</h2>
+        <p>Cinder doesn't always answer directly, but she answers.</p>
+      </div>
+      <div class="dialogue">
+        <div class="npc-portrait">
+          <svg viewBox="0 0 14 14" shape-rendering="crispEdges">
+            <rect x="6" y="2" width="2" height="2" fill="#f4c95d"/>
+            <rect x="5" y="4" width="4" height="2" fill="#f4c95d"/>
+            <rect x="4" y="6" width="6" height="3" fill="#ff7a45"/>
+            <rect x="6" y="9" width="2" height="3" fill="#c9552a"/>
+          </svg>
+        </div>
+        <div class="dialogue-box">
+          <div class="npc-name">CINDER</div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">
+              <span>How long is the game?</span><span class="mark">▸</span>
+            </button>
+            <div class="faq-a"><p>About 9–12 hours for one full pass through all three regions, longer if you go looking for the rooms that aren't on the map.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">
+              <span>Does the order I visit regions in actually matter?</span><span class="mark">▸</span>
+            </button>
+            <div class="faq-a"><p>Yes. Two NPCs move to different regions depending on which one you save first, and one boss fight changes entirely if you've already met Aurelac.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">
+              <span>Is there a difficulty option?</span><span class="mark">▸</span>
+            </button>
+            <div class="faq-a"><p>A "low oil" mode reduces how fast your lantern drains and adds checkpoints before boss rooms. Nothing about the story changes.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">
+              <span>Will there be a physical release?</span><span class="mark">▸</span>
+            </button>
+            <div class="faq-a"><p>If the game does well enough on Steam and Switch to fund a small pressing, yes — a cinder-orange cartridge is the whole reason this page has a cartridge section.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="platforms">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Pick your cartridge</h2>
+        <p>Cross-save works everywhere. Wherever you start the fire, you can finish it somewhere else.</p>
+      </div>
+      <div class="cart-row">
+        <div class="cart">
+          <div class="plat pixel">STEAM</div>
+          <h3>PC &amp; Steam Deck</h3>
+          <p>Full controller support, verified for Deck, and the highest resolution light maps.</p>
+          <div class="price">$19<span>.99</span></div>
+          <a class="btn small" href="#">Add to wishlist</a>
+        </div>
+        <div class="cart">
+          <div class="plat pixel">SWITCH</div>
+          <h3>Nintendo Switch</h3>
+          <p>Handheld or docked, with a redrawn UI sized for the smaller screen.</p>
+          <div class="price">$19<span>.99</span></div>
+          <a class="btn small" href="#">Follow on eShop</a>
+        </div>
+        <div class="cart">
+          <div class="plat pixel">ITCH.IO</div>
+          <h3>itch.io</h3>
+          <p>Name-your-price demo with the first region, updated every closed beta.</p>
+          <div class="price">Demo<span> — free</span></div>
+          <a class="btn small" href="#">Play the demo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="board-section">
+    <div class="wrap">
+      <div class="board">
+        <div class="pin"></div>
+        <h2>Join the caravan</h2>
+        <p>One email when a new build goes up, and nothing else. No launch-day noise, no "flash sale" three weeks later.</p>
+        <form class="board-form" id="questForm">
+          <input type="email" required placeholder="your@email.com" aria-label="Email address">
+          <button class="btn small" type="submit">Post to the board</button>
+        </form>
+        <div class="board-note" id="boardNote"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="healthbar">
+  <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  <div class="traveling-ember"></div>
+</div>
+
+<footer id="press">
+  <div class="wrap">
+    <span class="pixel brand-word" style="font-size:13px;">EMBER KNIGHT</span>
+    <div class="foot-grid">
+      <div>
+        <h4>GAME</h4>
+        <ul>
+          <li><a href="#world">The World</a></li>
+          <li><a href="#cast">Cast</a></li>
+          <li><a href="#bosses">Bosses</a></li>
+          <li><a href="#soundtrack">Soundtrack</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>FOLLOW</h4>
+        <ul>
+          <li><a href="#">Devlog</a></li>
+          <li><a href="#">Bluesky</a></li>
+          <li><a href="#">Discord</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>PRESS</h4>
+        <ul>
+          <li><a href="#">Press kit &amp; assets</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>Made by one person, in a room, over three years.</span>
+      <span>© 2026 Ember Knight. All light reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var cycleBtn = document.getElementById('cycleBtn');
+  var consoleEl = document.querySelector('.console');
+  cycleBtn.addEventListener('click', function(){
+    var isNight = consoleEl.classList.toggle('night');
+    cycleBtn.textContent = isNight ? 'Shift to day' : 'Shift to night';
+  });
+
+  document.querySelectorAll('.faq-q').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      var answer = btn.nextElementSibling;
+      btn.setAttribute('aria-expanded', String(!expanded));
+      answer.style.maxHeight = expanded ? '0px' : answer.scrollHeight + 'px';
+    });
+  });
+
+  document.querySelectorAll('.track').forEach(function(row){
+    row.addEventListener('click', function(){
+      document.querySelectorAll('.track').forEach(function(r){ r.classList.remove('now'); });
+      row.classList.add('now');
+    });
+  });
+
+  var questForm = document.getElementById('questForm');
+  var boardNote = document.getElementById('boardNote');
+  questForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    boardNote.textContent = "Pinned. You'll hear from the caravan soon.";
+    questForm.reset();
+  });
+
+  (function(){
+    var canvas = document.getElementById('embers');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) { canvas.remove(); return; }
+    var ctx = canvas.getContext('2d');
+    var particles = [];
+    var W, H;
+
+    function resize(){
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function spawn(){
+      particles.push({
+        x: Math.random() * W,
+        y: H + 10,
+        r: 1 + Math.random() * 2,
+        speed: 0.3 + Math.random() * 0.6,
+        drift: (Math.random() - 0.5) * 0.4,
+        life: 0,
+        maxLife: 300 + Math.random() * 300,
+        hue: Math.random() > 0.5 ? '244,201,93' : '255,122,69'
+      });
+    }
+
+    function tick(){
+      if (particles.length < 70 && Math.random() < 0.6) spawn();
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(function(p){
+        p.y -= p.speed;
+        p.x += p.drift;
+        p.life++;
+        var fade = 1 - p.life / p.maxLife;
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(' + p.hue + ',' + Math.max(fade, 0) * 0.8 + ')';
+        ctx.fillRect(p.x, p.y, p.r, p.r);
+      });
+      particles = particles.filter(function(p){ return p.life < p.maxLife && p.y > -10; });
+      requestAnimationFrame(tick);
+    }
+    tick();
+  })();
+</script>
+
+</body>
+</html>
